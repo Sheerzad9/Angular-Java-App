@@ -9,15 +9,17 @@
   <div class="row">
     <div class="col-sm"></div>
     <div class="col-sm">
-      <button
-        type="button"
-        class="btn btn-outline-secondary me-2"
-        placement="top"
-        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-        popoverTitle="Popover on top"
-      >
-        Click me for popover on top
-      </button>
+      <button (click)="fetchData()">Fetch Data</button>
+      <div *ngIf="users">
+        <hr />
+        <div *ngFor="let user of users">
+          <p>
+            Name: {{ user.firstName + " " + user.lastName }}
+            <br />
+            Email: {{ user.email }}
+          </p>
+        </div>
+      </div>
     </div>
     <div class="col-sm"></div>
   </div>
