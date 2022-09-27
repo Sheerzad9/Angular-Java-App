@@ -15,6 +15,11 @@ public class UserServiceImpl implements UserService{
     UserRepo userRepo;
 
     @Override
+    public AppUser addUser(AppUser user) {
+        return this.userRepo.save(user);
+    }
+
+    @Override
     public List<AppUser> getUsers() {
         return this.userRepo.findAll();
     }
