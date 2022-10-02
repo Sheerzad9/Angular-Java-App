@@ -4,6 +4,7 @@ import com.myapp.app.Service.UserService;
 import com.myapp.app.model.AppUser;
 import com.myapp.app.model.JwtRequest;
 import com.myapp.app.model.JwtResponse;
+import com.myapp.app.model.SingUpResponse;
 import com.myapp.app.userdetails.MyUserDetailsService;
 import com.myapp.app.utility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class UserController {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     private UserService userService;
 
@@ -34,7 +39,7 @@ public class UserController {
 
     // Auth
     @PostMapping("/authenticate")
-    public ResponseEntity<JwtResponse> authenticate(@RequestBody JwtRequest jwtRequest) throws Exception{
+    public ResponseEntity authenticate(@RequestBody JwtRequest jwtRequest) throws Exception{
         // check that email & password are correct
         try {
             this.authenticationManager.authenticate(
@@ -45,8 +50,8 @@ public class UserController {
             );
         } catch (BadCredentialsException e) {
             e.printStackTrace();
-            throw new Exception("INVALID_CREDENTIALS", e);
-            //return  new ResponseEntity<>("INVALID_CREDENTIALS", HttpStatus.BAD_REQUEST);
+            //throw new Exception("INVALID_CREDENTIALS", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID_CREDENTIALS" );
         }
 
         // get user
@@ -58,8 +63,25 @@ public class UserController {
                 = this.jwtUtility.generateToken(userDetails);
 
         //JwtResponse jwtResponse = new JwtResponse(token);
+        return new ResponseEntity<>(new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token)), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
+    @PostMapping("/signup")
+    public ResponseEntity signNewUser(@RequestBody AppUser newUser) {
+        String encodedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(encodedPassword);
+        AppUser user = this.userService.addUser(newUser);
+        if(user == null) {
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with same email already exists in DB");
+        }
+
+        final UserDetails userDetails
+                = this.myUserDetailsService.loadUserByUsername(user.getEmail());
+
+        final String token
+                = this.jwtUtility.generateToken(userDetails);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SingUpResponse(user, new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token))));
     }
 
     @CrossOrigin()

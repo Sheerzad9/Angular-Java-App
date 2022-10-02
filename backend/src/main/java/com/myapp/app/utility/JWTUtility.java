@@ -32,6 +32,10 @@ public class JWTUtility implements Serializable {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
+    public Long getExpirationTimeInMillis(String token) {
+        Date d = this.getExpirationDateFromToken(token);
+        return d.getTime();
+    }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);

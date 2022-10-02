@@ -4,6 +4,7 @@ import com.myapp.app.model.AppUser;
 import com.myapp.app.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser addUser(AppUser user) {
-        //user.getRoles().add(new Role(user, "ROLE_USER"));
-        return this.userRepo.save(user);
+        try {
+            return this.userRepo.save(user);
+        } catch (DataIntegrityViolationException e) {
+            return null;
+        }
     }
 
     @Override
