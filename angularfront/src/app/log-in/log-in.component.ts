@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-log-in',
@@ -8,7 +10,10 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./log-in.component.css'],
 })
 export class LogInComponent {
-  error: boolean;
+  error: {
+    login: boolean;
+    signup: boolean;
+  } = { login: false, signup: false };
   isLoginMode: boolean;
   loginData: {
     email: string;
@@ -21,27 +26,35 @@ export class LogInComponent {
     password: string;
   } = { firstName: null, lastName: null, email: null, password: null };
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.isLoginMode = true;
+    this.authService.user.subscribe((user) => {
+      console.log('user:');
+      console.log(user);
+    });
   }
 
   onAuthenticate(myForm: any) {
     console.log(myForm);
-    this.http
-      .post(
-        `http://localhost:8080/api/${
-          this.isLoginMode ? 'authenticate' : 'signup'
-        }`,
-        this.isLoginMode ? this.loginData : this.signupData
-      )
-      .subscribe(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
-          this.error = true;
-        }
-      );
+
+    this.isLoginMode
+      ? this.authService.handleLogin(this.loginData).subscribe(
+          (res) => {
+            this.router.navigate(['/homepage']);
+          },
+          (err) => (this.error.login = true)
+        )
+      : this.authService.handleSignup(this.signupData).subscribe(
+          (res) => {
+            this.router.navigate(['/homepage']);
+          },
+          (err) => {
+            this.error.signup = true;
+          }
+        );
   }
 }

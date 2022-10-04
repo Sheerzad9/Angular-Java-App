@@ -13,6 +13,9 @@
               <label for="user-email" style="padding-top: 13px">
                 &nbsp;Email
               </label>
+              <div class="alert alert-danger" *ngIf="error.login">
+                Email or password incorrect!
+              </div>
               <input
                 [(ngModel)]="loginData.email"
                 id="user-email"
@@ -105,7 +108,7 @@
                 email
               />
               <div class="form-border"></div>
-              <div class="alert alert-danger" *ngIf="error">
+              <div class="alert alert-danger" *ngIf="error.signup">
                 Given email is already taken!
               </div>
               <label for="user-password" style="padding-top: 22px"
