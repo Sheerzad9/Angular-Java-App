@@ -1,0 +1,151 @@
+<div id="wrapper">
+  <div class="container content justify-content-center">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+        <div id="card" *ngIf="isLoginMode">
+          <div id="card-content">
+            <div id="card-title">
+              <h2>LOGIN</h2>
+              <div class="underline-title"></div>
+            </div>
+            <form method="post" class="form" #myForm="ngForm">
+              <label for="user-email" style="padding-top: 13px">
+                &nbsp;Email
+              </label>
+              <input
+                [(ngModel)]="loginData.email"
+                id="user-email"
+                class="form-content"
+                type="email"
+                name="email"
+                autocomplete="on"
+                required
+                email
+              />
+              <div class="form-border"></div>
+              <label for="user-password" style="padding-top: 22px"
+                >&nbsp;Password
+              </label>
+              <input
+                [(ngModel)]="loginData.password"
+                id="user-password"
+                class="form-content"
+                type="password"
+                name="password"
+                required
+              />
+              <div class="form-border"></div>
+              <div style="text-align: center">
+                <input
+                  [disabled]="!myForm.valid"
+                  [ngClass]="
+                    myForm.valid ? 'submit-btn' : 'submit-btn-deactivated'
+                  "
+                  type="submit"
+                  name="submit"
+                  value="LOGIN"
+                  (click)="onAuthenticate(myForm)"
+                />
+                |
+                <input
+                  class="submit-btn"
+                  type="submit"
+                  name="changeLogin"
+                  value="SIGNUP"
+                  (click)="isLoginMode = !isLoginMode"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="signup-card" *ngIf="!isLoginMode">
+          <div id="card-content">
+            <div id="card-title">
+              <h2>SIGN UP</h2>
+              <div class="underline-title"></div>
+            </div>
+            <form method="post" class="form" #myForm="ngForm">
+              <label for="user-fisrtname" style="padding-top: 13px">
+                &nbsp;First name
+              </label>
+              <input
+                [(ngModel)]="signupData.firstName"
+                id="user-fisrtname"
+                class="form-content"
+                type="text"
+                name="user-fisrtname"
+                autocomplete="on"
+                required
+              />
+              <div class="form-border"></div>
+              <label for="user-lastname" style="padding-top: 22px"
+                >&nbsp;Last name
+              </label>
+              <input
+                [(ngModel)]="signupData.lastName"
+                id="user-lastname"
+                class="form-content"
+                type="user-lastname"
+                name="user-lastname"
+                required
+              />
+              <div class="form-border"></div>
+              <label for="user-email" style="padding-top: 13px">
+                &nbsp;Email
+              </label>
+              <input
+                [(ngModel)]="signupData.email"
+                id="user-email"
+                class="form-content"
+                type="email"
+                name="email"
+                autocomplete="on"
+                required
+                email
+              />
+              <div class="form-border"></div>
+              <div class="alert alert-danger" *ngIf="error">
+                Given email is already taken!
+              </div>
+              <label for="user-password" style="padding-top: 22px"
+                >&nbsp;Password
+              </label>
+              <input
+                [(ngModel)]="signupData.password"
+                id="user-password"
+                class="form-content"
+                type="password"
+                name="password"
+                required
+              />
+              <div class="form-border"></div>
+              <div style="text-align: center">
+                <input
+                  [disabled]="!myForm.valid"
+                  [ngClass]="
+                    myForm.valid ? 'submit-btn' : 'submit-btn-deactivated'
+                  "
+                  type="submit"
+                  name="submit"
+                  value="SIGNUP"
+                  (click)="onAuthenticate(myForm)"
+                />
+                |
+                <input
+                  class="submit-btn"
+                  type="submit"
+                  name="changeLogin"
+                  value="LOGIN"
+                  (click)="isLoginMode = !isLoginMode"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+  <app-log-in-footer class="background"></app-log-in-footer>
+</div>

@@ -2,17 +2,17 @@ package com.myapp.app.controller;
 
 import com.myapp.app.Service.UserService;
 import com.myapp.app.model.AppUser;
+import com.myapp.app.model.AuthenticateResponse;
 import com.myapp.app.model.JwtRequest;
 import com.myapp.app.model.JwtResponse;
-import com.myapp.app.model.SingUpResponse;
 import com.myapp.app.userdetails.MyUserDetailsService;
 import com.myapp.app.utility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -48,22 +48,24 @@ public class UserController {
                             jwtRequest.getPassword()
                     )
             );
-        } catch (BadCredentialsException e) {
+        } catch (AuthenticationException e) {
             e.printStackTrace();
             //throw new Exception("INVALID_CREDENTIALS", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID_CREDENTIALS" );
         }
 
-        // get user
+        // get user details
         final UserDetails userDetails
                 = this.myUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
+
+        AppUser tempUser = userService.getUserWithEmail(jwtRequest.getEmail());
 
         // generate jwttoken with user data
         final String token
                 = this.jwtUtility.generateToken(userDetails);
 
         //JwtResponse jwtResponse = new JwtResponse(token);
-        return new ResponseEntity<>(new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token)), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthenticateResponse(tempUser, new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token))), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
@@ -81,7 +83,7 @@ public class UserController {
         final String token
                 = this.jwtUtility.generateToken(userDetails);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SingUpResponse(user, new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token))));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthenticateResponse(user, new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token))));
     }
 
     @CrossOrigin()

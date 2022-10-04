@@ -15,6 +15,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
 
+    @Override
+    public AppUser getUserWithEmail(String email) {
+        return this.userRepo.findByEmail(email);
+    }
 
     @Override
     public AppUser addUser(AppUser user) {
@@ -24,6 +28,8 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+
 
     @Override
     public List<AppUser> getUsers() {

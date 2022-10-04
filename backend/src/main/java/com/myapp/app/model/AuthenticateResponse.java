@@ -1,18 +1,15 @@
 package com.myapp.app.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class SingUpResponse {
+public class AuthenticateResponse {
     private AppUser user;
     private JwtResponse jwtResponse;
-
-    public SingUpResponse(AppUser user, JwtResponse jwtResponse) {
-        this.user = user;
-        this.jwtResponse = jwtResponse;
-    }
 }

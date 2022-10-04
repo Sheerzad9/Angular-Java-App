@@ -34,6 +34,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**").allowedMethods("*");
+//    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(this.myUserDetailsService);
