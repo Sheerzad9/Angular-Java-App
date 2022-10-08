@@ -9,17 +9,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyAngularMaterialModule } from './myangularmaterial.module';
 import { LogInModule } from './log-in/log-in.module';
 import { HomepageComponent } from './homepage/homepage.component';
+import { ProfilepageComponent } from './profilepage/profilepage.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
-  declarations: [AppComponent, HomepageComponent],
+  declarations: [
+    AppComponent,
+    HomepageComponent,
+    ProfilepageComponent,
+    MenuComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MyAngularMaterialModule,
     LogInModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
