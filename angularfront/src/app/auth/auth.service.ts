@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 interface AuthResponse {
   user: {
@@ -27,13 +28,14 @@ export class AuthService {
 
   handleLogin(bodyData: { email: string; password: string }) {
     return this.http
-      .post<AuthResponse>('http://localhost:8080/api/authenticate', bodyData)
+      .post<AuthResponse>(`${environment.baseUrl}/authenticate`, bodyData)
       .pipe(
         tap((resData) => {
           this.handleAuthentication(
             resData.user.firstName,
             resData.user.lastName,
             resData.user.email,
+            bodyData.password,
             resData.jwtResponse.jwtToken,
             resData.jwtResponse.expiryDateInMillis
           );
@@ -48,13 +50,14 @@ export class AuthService {
     password: string;
   }) {
     return this.http
-      .post<AuthResponse>('http://localhost:8080/api/signup', bodyData)
+      .post<AuthResponse>(`${environment.baseUrl}/signup`, bodyData)
       .pipe(
         tap((resData) => {
           this.handleAuthentication(
             resData.user.firstName,
             resData.user.lastName,
             resData.user.email,
+            bodyData.password,
             resData.jwtResponse.jwtToken,
             resData.jwtResponse.expiryDateInMillis
           );
@@ -66,6 +69,7 @@ export class AuthService {
     firstName: string,
     lastName: string,
     email: string,
+    password: string,
     _token: string,
     _tokenExpirationDate: number
   ) {
@@ -75,14 +79,34 @@ export class AuthService {
       firstName,
       lastName,
       email,
+      password,
       _token,
       new Date(tokenExpirationInDate)
     );
     this.user.next(tempUser);
+    console.log(tempUser);
+    localStorage.setItem('userData', JSON.stringify(tempUser));
+  }
+
+  autoLogin() {
+    let tempUser: User;
+    tempUser = JSON.parse(window.localStorage.getItem('userData'));
+    if (!tempUser) return;
+
+    this.handleLogin({
+      email: tempUser.email,
+      password: tempUser.password,
+    }).subscribe(
+      (res) => {
+        this.router.navigate(['/homepage']);
+      },
+      (err) => {}
+    );
   }
 
   logout() {
     this.user.next(null);
+    window.localStorage.removeItem('userData');
     this.router.navigate(['/authenticate']);
   }
 }
