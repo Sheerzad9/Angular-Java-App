@@ -8,4 +8,5 @@ public interface UserService {
    AppUser getUserWithEmail(String email);
    List<AppUser> getUsers();
    AppUser addUser(AppUser user);
+   AppUser updateUser(AppUser user);
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +26,11 @@ public class AppUser {
     private String email;
     @Column(name="password")
     private String password;
-//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "appUser")
-//    private List<Role> roles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+
+    public void addPost(Post post){
+        post.setUser(this);
+        this.posts.add(post);
+    }
 }
