@@ -1,6 +1,5 @@
 package com.myapp.app.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="users")
 public class AppUser {
@@ -26,7 +24,9 @@ public class AppUser {
     private String email;
     @Column(name="password")
     private String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "profile_pic_url")
+    private String profilePicUrl;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Post> posts;
 
     public void addPost(Post post){

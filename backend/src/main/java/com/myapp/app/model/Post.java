@@ -2,17 +2,20 @@ package com.myapp.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Data
+//@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@ToString
 @Table(name = "posts")
 public class Post {
     @Id
@@ -24,14 +27,17 @@ public class Post {
     private String content;
     @Column(name = "image_url")
     private String imageUrl;
+    @Column(name = "timestamp")
+    private Date timestamp;
     @JsonIgnore
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 
-    public Post(String title, String content, String imageUrl){
+    public Post(String title, String content, String imageUrl, Date timestamp){
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
+        this.timestamp = timestamp;
     }
 }
