@@ -84,7 +84,6 @@ export class AuthService {
       new Date(tokenExpirationInDate)
     );
     this.user.next(tempUser);
-    console.log(tempUser);
     localStorage.setItem('userData', JSON.stringify(tempUser));
   }
 
