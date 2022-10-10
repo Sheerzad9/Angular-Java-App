@@ -32,15 +32,9 @@ export class LogInComponent {
     private router: Router
   ) {
     this.isLoginMode = true;
-    this.authService.user.subscribe((user) => {
-      console.log('user:');
-      console.log(user);
-    });
   }
 
   onAuthenticate(myForm: any) {
-    console.log(myForm);
-
     this.isLoginMode
       ? this.authService.handleLogin(this.loginData).subscribe(
           (res) => {
