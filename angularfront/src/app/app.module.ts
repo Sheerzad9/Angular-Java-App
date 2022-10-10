@@ -11,6 +11,9 @@ import { LogInModule } from './log-in/log-in.module';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { MenuComponent } from './menu/menu.component';
+import { PostComponent } from './homepage/post/post.component';
+import { PostmodalComponent } from './homepage/post/postmodal/postmodal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,8 @@ import { MenuComponent } from './menu/menu.component';
     HomepageComponent,
     ProfilepageComponent,
     MenuComponent,
+    PostComponent,
+    PostmodalComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +32,7 @@ import { MenuComponent } from './menu/menu.component';
     BrowserAnimationsModule,
     LogInModule,
     NgbModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
