@@ -1,6 +1,6 @@
-package com.myapp.app.Service;
+package com.myapp.app.service;
 
-import com.myapp.app.model.AppUser;
+import com.myapp.app.entity.AppUser;
 
 import java.util.List;
 

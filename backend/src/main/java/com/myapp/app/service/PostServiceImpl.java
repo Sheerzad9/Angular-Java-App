@@ -1,7 +1,7 @@
-package com.myapp.app.Service;
+package com.myapp.app.service;
 
-import com.myapp.app.model.AppUser;
-import com.myapp.app.model.Post;
+import com.myapp.app.entity.AppUser;
+import com.myapp.app.entity.Post;
 import com.myapp.app.repository.PostRepo;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

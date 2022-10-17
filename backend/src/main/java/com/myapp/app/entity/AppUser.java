@@ -1,4 +1,4 @@
-package com.myapp.app.model;
+package com.myapp.app.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

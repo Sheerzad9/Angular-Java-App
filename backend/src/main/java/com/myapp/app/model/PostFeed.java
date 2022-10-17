@@ -1,5 +1,6 @@
 package com.myapp.app.model;
 
+import com.myapp.app.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

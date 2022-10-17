@@ -1,4 +1,4 @@
-package com.myapp.app.model;
+package com.myapp.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 //@Data
@@ -28,13 +28,15 @@ public class Post {
     @Column(name = "image_url")
     private String imageUrl;
     @Column(name = "timestamp")
-    private Date timestamp;
+    private Timestamp timestamp;
+    @Column(name = "likes")
+    private int likes;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 
-    public Post(String title, String content, String imageUrl, Date timestamp){
+    public Post(String title, String content, String imageUrl, Timestamp timestamp){
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;

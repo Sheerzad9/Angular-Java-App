@@ -1,7 +1,7 @@
 package com.myapp.app.controller;
 
-import com.myapp.app.Service.UserService;
-import com.myapp.app.model.AppUser;
+import com.myapp.app.service.UserService;
+import com.myapp.app.entity.AppUser;
 import com.myapp.app.model.AuthenticateResponse;
 import com.myapp.app.model.JwtRequest;
 import com.myapp.app.model.JwtResponse;
