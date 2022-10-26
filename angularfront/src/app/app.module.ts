@@ -10,10 +10,11 @@ import { LogInModule } from './log-in/log-in.module';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { MenuComponent } from './menu/menu.component';
-import { PostComponent } from './post/post.component';
-import { PostmodalComponent } from './post/postmodal/postmodal.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptorService } from './auth/auth-intertceptor.service';
+import { PostModule } from './post/post.module';
+import { LoadingInterceptor } from './shared/loading-interceptor.service';
+import { SpinnerModule } from './shared/spinner/spinner.module';
 
 @NgModule({
   declarations: [
@@ -21,8 +22,6 @@ import { AuthInterceptorService } from './auth/auth-intertceptor.service';
     HomepageComponent,
     ProfilepageComponent,
     MenuComponent,
-    PostComponent,
-    PostmodalComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,11 +32,18 @@ import { AuthInterceptorService } from './auth/auth-intertceptor.service';
     LogInModule,
     NgbModule,
     ReactiveFormsModule,
+    PostModule,
+    SpinnerModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true,
     },
   ],

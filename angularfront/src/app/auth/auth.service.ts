@@ -32,6 +32,7 @@ export class AuthService {
       .pipe(
         tap((resData) => {
           this.handleAuthentication(
+            resData.user.id,
             resData.user.firstName,
             resData.user.lastName,
             resData.user.email,
@@ -54,6 +55,7 @@ export class AuthService {
       .pipe(
         tap((resData) => {
           this.handleAuthentication(
+            resData.user.id,
             resData.user.firstName,
             resData.user.lastName,
             resData.user.email,
@@ -66,6 +68,7 @@ export class AuthService {
   }
 
   handleAuthentication(
+    id: number,
     firstName: string,
     lastName: string,
     email: string,
@@ -76,6 +79,7 @@ export class AuthService {
     // We will get _tokenExpirationDate as milliseconds to two hours in future from our backend, so we have to convert millis to date
     const tokenExpirationInDate = new Date(_tokenExpirationDate);
     const tempUser = new User(
+      id,
       firstName,
       lastName,
       email,

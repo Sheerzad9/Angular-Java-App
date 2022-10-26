@@ -26,11 +26,7 @@ export class LogInComponent {
     password: string;
   } = { firstName: null, lastName: null, email: null, password: null };
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private router: Router
-  ) {
+  constructor(private authService: AuthService, private router: Router) {
     this.isLoginMode = true;
   }
 
@@ -38,6 +34,7 @@ export class LogInComponent {
     this.isLoginMode
       ? this.authService.handleLogin(this.loginData).subscribe(
           (res) => {
+            console.log('Testi');
             this.router.navigate(['/homepage']);
           },
           (err) => (this.error.login = true)

@@ -4,6 +4,7 @@
       <div class="col"></div>
       <div class="col">
         <div id="card" *ngIf="isLoginMode">
+          <spinner></spinner>
           <div id="card-content">
             <div id="card-title">
               <h2>LOGIN</h2>
@@ -63,6 +64,7 @@
           </div>
         </div>
         <div id="signup-card" *ngIf="!isLoginMode">
+          <spinner></spinner>
           <div id="card-content">
             <div id="card-title">
               <h2>SIGN UP</h2>

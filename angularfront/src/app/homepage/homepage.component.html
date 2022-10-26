@@ -22,16 +22,24 @@
         </svg>
       </div>
     </div>
-    <div class="col-md-6" align="center">
+    <div class="col-md-8" align="center">
       <div class="row" style="border-style: solid; border-color: coral">
         <div class="col">
           <h3>Testi</h3>
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            (click)="onAddPost()"
+          >
+            Add new post
+          </button>
         </div>
       </div>
       <div class="row" style="border-style: solid; border-color: red">
-        <div class="col">Testi2</div>
+        <div class="col">
+          <app-post></app-post>
+        </div>
       </div>
     </div>
-    <div class="col-md-3"></div>
   </div>
 </div>

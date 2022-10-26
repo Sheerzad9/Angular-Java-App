@@ -1,0 +1,78 @@
+<button
+  type="button"
+  class="close"
+  aria-label="Close"
+  style="padding: 15px"
+  (click)="onCloseModal()"
+>
+  <span aria-hidden="true">&times;</span>
+</button>
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col" align="center">
+      <form [formGroup]="postForm">
+        <div class="form-group">
+          <label class="col-form-label-lg">Title </label>
+          <input
+            formControlName="title"
+            class="form-control form-control-md"
+            placeholder="Required*"
+          />
+        </div>
+        <div
+          class="alert alert-danger"
+          *ngIf="
+            postForm.controls.title.touched &&
+            postForm.controls.title.status === 'INVALID'
+          "
+        >
+          Title must contain atleast 5 characters
+        </div>
+        <div class="form-group">
+          <label class="col-form-label-lg">Content</label>
+          <textarea
+            formControlName="content"
+            cols="30"
+            rows="10"
+            placeholder="Required*"
+            class="form-control form-control-md"
+          ></textarea>
+        </div>
+        <div
+          class="alert alert-danger"
+          *ngIf="
+            postForm.controls.content.touched &&
+            postForm.controls.content.status === 'INVALID'
+          "
+        >
+          Content must contain atleast 15 characters
+        </div>
+      </form>
+      <div class="form-group">
+        <label class="col-form-label-lg" style="padding: 25px"
+          >Upload Photo
+          <br />
+          <input
+            class="form-control form-control-md"
+            type="file"
+            (change)="onFileSelected($event)"
+          />
+        </label>
+        <hr />
+        <div class="alert alert-danger" style="padding: 15px" *ngIf="error">
+          Upload must be type image! (.jpg or .img) ending!
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onSubmit()"
+          [disabled]="postForm.status === 'INVALID' || error"
+          style="margin: 30px"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
