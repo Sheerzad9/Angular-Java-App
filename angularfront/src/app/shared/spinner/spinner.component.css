@@ -1,0 +1,13 @@
+.vertically-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.center {
+  position: absolute !important;
+  left: 50%;
+  transform: translateX(-50%);
+}
