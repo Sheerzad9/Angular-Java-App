@@ -3,6 +3,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  NgForm,
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -61,25 +62,47 @@ export class PostmodalComponent implements OnInit {
   }
 
   onSubmit() {
-    let filename =
-      this.user.firstName +
-      Date.now() +
-      '.' +
-      this.userFile.name.split('?')[0].split('.').pop();
+    if (this.userFile) {
+      let filename =
+        this.user.firstName +
+        Date.now() +
+        '.' +
+        this.userFile.name.split('?')[0].split('.').pop();
 
-    const formData = new FormData();
-    formData.append('file', this.userFile, filename);
-    formData.append('email', this.user.email);
-    formData.append('title', this.postForm.value.title);
-    formData.append('content', this.postForm.value.content);
+      const formData = new FormData();
+      formData.append('file', this.userFile, filename);
+      formData.append('email', this.user.email);
+      formData.append('title', this.postForm.value.title);
+      formData.append('content', this.postForm.value.content);
 
-    this.postService.addNewPostWithImage(formData).subscribe(
-      (res) => console.log(),
-      (err) => console.log()
-    );
+      this.postService.addNewPostWithImage(formData).subscribe(
+        (res) => this.onCloseModal(),
+        (err) => {}
+      );
+    } else {
+      console.log('else');
+      const postData = {
+        userEmail: this.user.email,
+        post: {
+          title: this.postForm.value.title,
+          content: this.postForm.value.content,
+        },
+      };
+      this.postService.addNewPost(postData).subscribe(
+        (res: any) => {
+          window.location.reload();
+        },
+        (err) => {}
+      );
+    }
   }
 
   onCloseModal() {
     this.activeModal.close();
+  }
+
+  onDeleteImage(myF: NgForm) {
+    this.userFile = null;
+    myF.resetForm();
   }
 }

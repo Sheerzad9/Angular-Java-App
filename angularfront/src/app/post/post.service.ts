@@ -11,6 +11,16 @@ export class PostService {
     return this.http.post(`${environment.baseUrl}/file/upload`, formData);
   }
 
+  addNewPost(postData: {
+    userEmail: string;
+    post: {
+      title: string;
+      content: string;
+    };
+  }) {
+    return this.http.post(`${environment.baseUrl}/post`, postData);
+  }
+
   getPosts(ascendingOrder: boolean = false) {
     return this.http.get<PostFeed[]>(`${environment.baseUrl}/posts`, {
       params: new HttpParams().set('ascending', ascendingOrder),

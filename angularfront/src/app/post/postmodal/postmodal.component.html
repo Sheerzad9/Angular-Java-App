@@ -49,16 +49,26 @@
           Content must contain atleast 15 characters
         </div>
       </form>
-      <div class="form-group">
+      <form class="form-group" #myF="ngForm">
         <label class="col-form-label-lg" style="padding: 25px"
           >Upload Photo
           <br />
           <input
+            ngModel
+            name="file"
             class="form-control form-control-md"
             type="file"
             (change)="onFileSelected($event)"
           />
         </label>
+        <button
+          *ngIf="myF.form.value.file"
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="onDeleteImage(myF)"
+        >
+          <i class="fa fa-trash" aria-hidden="true"></i> Delete
+        </button>
         <hr />
         <div class="alert alert-danger" style="padding: 15px" *ngIf="error">
           Upload must be type image! (.jpg or .img) ending!
@@ -72,7 +82,7 @@
         >
           Submit
         </button>
-      </div>
+      </form>
     </div>
   </div>
 </div>
