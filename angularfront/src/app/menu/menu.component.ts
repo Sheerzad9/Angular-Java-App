@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 
 @Component({
   selector: 'app-menu',
@@ -7,9 +9,15 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit {
+  user: User;
+  mySub: Subscription;
   constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   doLogOut() {
     this.authService.logout();

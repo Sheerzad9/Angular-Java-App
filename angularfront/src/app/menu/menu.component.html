@@ -1,6 +1,6 @@
-<div class="container-fluid no-padding">
-  <div class="row" style="border: 1px solid red">
-    <div class="col-md-12 col-sm-12 col-lg-12" style="border: 1px solid black">
+<div class="container-fluid no-padding fixed-top">
+  <div class="row" style="border: 1px solid red; background-color: white">
+    <div class="col-md-12 col-sm-12 col-lg-12">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" routerLink="/homepage">Navbar</a>
         <button
@@ -29,6 +29,7 @@
               <a
                 class="nav-link"
                 routerLink="/profile"
+                [queryParams]="{ id: user.id }"
                 routerLinkActive="active"
                 >Profile</a
               >
