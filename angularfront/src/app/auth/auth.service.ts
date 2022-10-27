@@ -89,12 +89,44 @@ export class AuthService {
     );
     this.user.next(tempUser);
     localStorage.setItem('userData', JSON.stringify(tempUser));
+    // setting autologout
+    this.autoLogout(tokenExpirationInDate.getTime() - new Date().getTime());
   }
 
   autoLogin() {
-    let tempUser: User;
-    tempUser = JSON.parse(window.localStorage.getItem('userData'));
-    if (!tempUser) return;
+    let userData: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      password: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    };
+    userData = JSON.parse(window.localStorage.getItem('userData'));
+    if (!userData) return;
+
+    const tempUser = new User(
+      +userData.id,
+      userData.firstName,
+      userData.lastName,
+      userData.email,
+      userData.password,
+      userData._token,
+      new Date(userData._tokenExpirationDate)
+    );
+
+    // Checking if expirytime of token is exceeded (the expirytime is setted automatically to 2hours ahead of time from last login)
+    if (!tempUser.token) {
+      window.localStorage.removeItem('userData');
+      return;
+    }
+
+    // Everyhting should be ok ak this point, so we save new user & set autoLogout time and process to log in;
+    this.user.next(tempUser);
+    this.autoLogout(
+      new Date(userData._tokenExpirationDate).getTime() - new Date().getTime()
+    );
 
     this.handleLogin({
       email: tempUser.email,
@@ -105,6 +137,12 @@ export class AuthService {
       },
       (err) => {}
     );
+  }
+
+  autoLogout(timeInMillis: number) {
+    setTimeout(() => {
+      this.logout();
+    }, timeInMillis);
   }
 
   logout() {
