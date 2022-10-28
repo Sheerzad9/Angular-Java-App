@@ -1,11 +1,13 @@
 package com.myapp.app.controller;
 
+import com.myapp.app.entity.AppUser;
+import com.myapp.app.entity.Comment;
+import com.myapp.app.entity.Post;
+import com.myapp.app.model.NewCommentRequest;
+import com.myapp.app.model.NewPostRequest;
+import com.myapp.app.model.PostFeed;
 import com.myapp.app.service.PostService;
 import com.myapp.app.service.UserService;
-import com.myapp.app.entity.AppUser;
-import com.myapp.app.model.NewPostRequest;
-import com.myapp.app.entity.Post;
-import com.myapp.app.model.PostFeed;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,24 +40,40 @@ public class PostController {
         List<Post> posts = ascending ? this.postService.getPostsASCOrder() : this.postService.getPostsDESCOrder();
         List<PostFeed> tempPostFeed = new ArrayList<>();
         posts.forEach( post -> {
-            PostFeed tempPost = new PostFeed(post, post.getUser().getId(), post.getUser().getFirstName()+" "+post.getUser().getLastName(), post.getUser().getProfilePicUrl());
+            PostFeed tempPost = new PostFeed(post, null, post.getUser().getId(), post.getUser().getFirstName()+" "+post.getUser().getLastName(), post.getUser().getProfilePicUrl());
+            tempPost.generateCommentsList();
             tempPostFeed.add(tempPost);
         });
         return ResponseEntity.status(HttpStatus.OK).body(tempPostFeed);
     }
 
+    @PostMapping("/post/comment")
+    public ResponseEntity addNewCommentToPost(@RequestBody NewCommentRequest newCommentRequest){
+        AppUser tempUser = this.userService.getUserWithId(newCommentRequest.getUserId());
+        Post post = this.postService.getPostWithId(newCommentRequest.getPostId());
+
+        if(tempUser != null && post != null){
+            Comment comment = new Comment(newCommentRequest.getComment());
+            post.addComment(comment, tempUser);
+            this.postService.updatePost(post);
+            return ResponseEntity.status(HttpStatus.OK).body(comment.getPost());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User or post not found!");
+    }
+
+    // This will create post without image
     @PostMapping("/post")
     public ResponseEntity addNewPost(@RequestBody NewPostRequest newPostRequest) {
-        AppUser tempUser = postService.getUser(newPostRequest.getUserEmail());
+        AppUser tempUser = this.userService.getUserWithEmail(newPostRequest.getUserEmail());
         if (tempUser == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found with given email");
         }
 
         Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime() + (1000 * 60 * 60 * 3)); // To get EEST, todo: create better way to do this
+        Timestamp timestamp = new Timestamp(date.getTime()); // To get EEST, todo: create better way to do this
 
         Post newPost = new Post(newPostRequest.getPost().getTitle(), newPostRequest.getPost().getContent(),
-                newPostRequest.getPost().getImageUrl(), timestamp);
+                null, timestamp);
         tempUser.addPost(newPost);
         this.userService.updateUser(tempUser);
         return  ResponseEntity.status(HttpStatus.CREATED).body(tempUser);
