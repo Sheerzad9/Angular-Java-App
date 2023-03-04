@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from '../auth/auth.service';
 import { PostmodalComponent } from '../post/postmodal/postmodal.component';
 
 @Component({
@@ -9,10 +8,7 @@ import { PostmodalComponent } from '../post/postmodal/postmodal.component';
   styleUrls: ['./homepage.component.css'],
 })
 export class HomepageComponent {
-  constructor(
-    private authService: AuthService,
-    private modalService: NgbModal
-  ) {}
+  constructor(private modalService: NgbModal) {}
 
   onAddPost() {
     let dlg = this.modalService

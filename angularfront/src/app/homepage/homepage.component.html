@@ -1,12 +1,13 @@
 <app-menu></app-menu>
-<div class="container-fluid no-padind">
-  <div class="row">
+<div class="container-fluid">
+  <div class="row bg">
     <div class="col-md-3">
-      <div class="svg-container" style="position: fixed">
+      <div class="svg-container position-fixed">
         <svg
           class="hp-svg"
           id="visual"
-          viewBox="0 0 900 600"
+          viewBox="-50 0 600 600"
+          preserveAspectRatio="xMinYMin"
           width="100%"
           height="100%"
           xmlns="http://www.w3.org/2000/svg"
@@ -22,10 +23,9 @@
         </svg>
       </div>
     </div>
-    <div class="col-md-8" align="center">
+    <div class="col-md-8 box">
       <div class="row" style="border-style: solid; border-color: coral">
-        <div class="col">
-          <h3>Testi</h3>
+        <div class="col" style="padding-top: 60px">
           <button
             type="button"
             class="btn btn-outline-primary"
@@ -35,7 +35,7 @@
           </button>
         </div>
       </div>
-      <div class="row" style="border-style: solid; border-color: red">
+      <div class="row">
         <div class="col">
           <app-post></app-post>
         </div>
