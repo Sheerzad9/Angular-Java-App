@@ -15,6 +15,7 @@ import { AuthInterceptorService } from './auth/auth-intertceptor.service';
 import { PostModule } from './post/post.module';
 import { LoadingInterceptor } from './shared/loading-interceptor.service';
 import { SpinnerModule } from './shared/spinner/spinner.module';
+import { DeletePostConfirmationModalComponent } from './modals/delete-post-confirmation-modal/delete-post-confirmation-modal.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { SpinnerModule } from './shared/spinner/spinner.module';
     HomepageComponent,
     ProfilepageComponent,
     MenuComponent,
+    DeletePostConfirmationModalComponent,
   ],
   imports: [
     BrowserModule,
