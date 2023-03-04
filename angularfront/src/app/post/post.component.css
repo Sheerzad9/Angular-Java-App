@@ -6,7 +6,7 @@ body {
   background-size: cover;
   display: grid;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .box {
   position: relative;
@@ -35,19 +35,26 @@ body {
   float: left;
 }
 .user-block .username {
+  transition: 1s;
   font-size: 16px;
   font-weight: 600;
+  color: blue;
+  cursor: pointer;
+}
+.user-block .username:hover {
+  transition: 1s;
+  border-bottom: 1px solid blue;
 }
 .user-block .shared {
   color: black;
   font-size: 13px;
 }
-.user-block .username,
+/* .user-block .username,
 .user-block .description,
 .user-block .comment {
   display: block;
   margin-left: 50px;
-}
+} */
 .box-header > .box-tools {
   position: absolute;
   right: 10px;
@@ -90,8 +97,9 @@ body {
   padding-top: 0;
 }
 .box-comments .box-comment {
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  /* border-bottom: 1px solid #eee; */
+  border-bottom: 1px solid black;
 }
 .img-sm,
 .box-comments .box-comment img,
@@ -134,4 +142,19 @@ body {
 }
 .like {
   transition: 1.5s;
+}
+.comment-profpic {
+  background-color: rgb(169, 169, 169, 0.6);
+  width: 7.5%;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.post-profpic {
+  background-color: rgb(169, 169, 169, 0.6);
+  width: 8.5%;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.ondbox {
+  margin-right: 10%;
 }

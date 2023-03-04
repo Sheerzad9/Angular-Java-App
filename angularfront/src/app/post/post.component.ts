@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { PostService } from './post.service';
@@ -31,7 +32,8 @@ export class PostComponent implements OnInit {
 
   constructor(
     private postService: PostService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -61,5 +63,9 @@ export class PostComponent implements OnInit {
       },
       (err) => console.log(err)
     );
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
   }
 }
