@@ -20,7 +20,6 @@ export class AuthInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return this.authService.user.pipe(
       take(1),
-      // exhaustMap:lla vaihdetaan aiempi "user" observable nyt http observableksi
       exhaustMap((user) => {
         if (!user) {
           return next.handle(req);

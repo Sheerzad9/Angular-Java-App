@@ -127,16 +127,6 @@ export class AuthService {
     this.autoLogout(
       new Date(userData._tokenExpirationDate).getTime() - new Date().getTime()
     );
-
-    this.handleLogin({
-      email: tempUser.email,
-      password: tempUser.password,
-    }).subscribe(
-      (res) => {
-        this.router.navigate(['/homepage']);
-      },
-      (err) => {}
-    );
   }
 
   autoLogout(timeInMillis: number) {
