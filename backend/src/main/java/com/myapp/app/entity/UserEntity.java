@@ -1,18 +1,20 @@
 package com.myapp.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name="users")
-public class AppUser {
+public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -26,8 +28,9 @@ public class AppUser {
     private String password;
     @Column(name = "profile_pic_url")
     private String profilePicUrl;
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Post> posts;
+    private Set<Post> posts;
 
     public void addPost(Post post){
         post.setUser(this);

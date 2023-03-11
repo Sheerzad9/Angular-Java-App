@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<AppUser, Integer> {
     AppUser findByEmail(String email);
+    AppUser findById(int id);
 }
