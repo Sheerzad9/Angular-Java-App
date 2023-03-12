@@ -1,11 +1,11 @@
 package com.myapp.app.controller;
 
-import com.myapp.app.entity.AppUser;
+import com.myapp.app.dto.PostFeed;
 import com.myapp.app.entity.Comment;
 import com.myapp.app.entity.Post;
+import com.myapp.app.entity.UserEntity;
 import com.myapp.app.model.NewCommentRequest;
 import com.myapp.app.model.NewPostRequest;
-import com.myapp.app.model.PostFeed;
 import com.myapp.app.service.PostService;
 import com.myapp.app.service.UserService;
 import net.coobird.thumbnailator.Thumbnails;
@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,19 +36,14 @@ public class PostController {
 
     @GetMapping("/posts")
     public ResponseEntity getPosts(@RequestParam("ascending") boolean ascending){
-        List<Post> posts = ascending ? this.postService.getPostsASCOrder() : this.postService.getPostsDESCOrder();
-        List<PostFeed> tempPostFeed = new ArrayList<>();
-        posts.forEach( post -> {
-            PostFeed tempPost = new PostFeed(post, null, post.getUser().getId(), post.getUser().getFirstName()+" "+post.getUser().getLastName(), post.getUser().getProfilePicUrl());
-            tempPost.generateCommentsList();
-            tempPostFeed.add(tempPost);
-        });
-        return ResponseEntity.status(HttpStatus.OK).body(tempPostFeed);
+        List<PostFeed> posts = ascending ? this.postService.getPostsASCOrder() : this.postService.getPostsDESCOrder();
+        return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
     @PostMapping("/post/comment")
     public ResponseEntity addNewCommentToPost(@RequestBody NewCommentRequest newCommentRequest){
-        AppUser tempUser = this.userService.getUserWithId(newCommentRequest.getUserId());
+        //UserEntity tempUser = this.userService.getUserWithIdAndPosts(newCommentRequest.getUserId());
+        UserEntity tempUser = this.userService.getUserWithId(newCommentRequest.getUserId());
         Post post = this.postService.getPostWithId(newCommentRequest.getPostId());
 
         if(tempUser != null && post != null){
@@ -64,7 +58,7 @@ public class PostController {
     // This will create post without image
     @PostMapping("/post")
     public ResponseEntity addNewPost(@RequestBody NewPostRequest newPostRequest) {
-        AppUser tempUser = this.userService.getUserWithEmail(newPostRequest.getUserEmail());
+        UserEntity tempUser = this.userService.getUserWithEmail(newPostRequest.getUserEmail());
         if (tempUser == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found with given email");
         }
@@ -89,7 +83,7 @@ public class PostController {
         Thumbnails.of(multipartFile.getInputStream()).size(600, 300).toFile(DIRECTORY+filename);
         //copy(multipartFile.getInputStream(), fileStorage, REPLACE_EXISTING);
 
-        AppUser tempUser = this.userService.getUserWithEmail(email);
+        UserEntity tempUser = this.userService.getUserWithEmail(email);
 
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime() ); // To get EEST, todo: create better way to do this

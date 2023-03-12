@@ -1,27 +1,19 @@
-package com.myapp.app.model;
+package com.myapp.app.dto;
 
 import com.myapp.app.entity.Post;
+import com.myapp.app.model.CommentsWUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostFeed {
+public class PostFeed implements Serializable {
     private Post post;
     private List<CommentsWUser> postComments;
-    private int userId;
-    private String fullName;
-    private String profilePic;
-
-    public void generateCommentsList(){
-        if(this.postComments == null) this.postComments = new ArrayList<>();
-        this.post.getComments().forEach( comment -> {
-            this.postComments.add(new CommentsWUser(comment, comment.getUser().getFirstName(), comment.getUser().getLastName(), comment.getUser().getProfilePicUrl(), comment.getUser().getId()));
-        });
-    }
+    private UserDto creator;
 }
