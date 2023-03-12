@@ -1,18 +1,18 @@
 package com.myapp.app.controller;
 
-import com.myapp.app.service.UserService;
-import com.myapp.app.entity.AppUser;
+import com.myapp.app.dto.SignUpRequest;
+import com.myapp.app.dto.UserDto;
+import com.myapp.app.dto.UserProfileResponse;
 import com.myapp.app.model.AuthenticateResponse;
 import com.myapp.app.model.JwtRequest;
 import com.myapp.app.model.JwtResponse;
+import com.myapp.app.service.UserService;
 import com.myapp.app.userdetails.MyUserDetailsService;
 import com.myapp.app.utility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -39,64 +39,36 @@ public class UserController {
     // Auth
     @PostMapping("/authenticate")
     public ResponseEntity authenticate(@RequestBody JwtRequest jwtRequest) throws Exception{
-        // check that email & password are correct
-        try {
-            this.authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            jwtRequest.getEmail(),
-                            jwtRequest.getPassword()
-                    )
-            );
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-            //throw new Exception("INVALID_CREDENTIALS", e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("INVALID_CREDENTIALS" );
-        }
+        // check that email & password are correct, userService will throw error if credentials are bad and code below that won't be executed
+        this.userService.authenticateUser(jwtRequest);
 
-        // get user details
-        final UserDetails userDetails
-                = this.myUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
+        AuthenticateResponse authenticateResponse = this.userService.generateAuthenticationResponse(jwtRequest);
 
-        AppUser tempUser = userService.getUserWithEmail(jwtRequest.getEmail());
-
-        // generate jwttoken with user data
-        final String token
-                = this.jwtUtility.generateToken(userDetails);
-
-        //JwtResponse jwtResponse = new JwtResponse(token);
-        return new ResponseEntity<>(new AuthenticateResponse(tempUser, new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token))), HttpStatus.OK);
+        return new ResponseEntity<>(authenticateResponse, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity signNewUser(@RequestBody AppUser newUser) {
-        String encodedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
-        newUser.setPassword(encodedPassword);
-        AppUser user = this.userService.addUser(newUser);
-        if(user == null) {
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with same email already exists in DB");
-        }
+    public ResponseEntity signNewUser(@RequestBody SignUpRequest signUpRequest) {
+        UserDto userDto = this.userService.addUser(signUpRequest);
 
         final UserDetails userDetails
-                = this.myUserDetailsService.loadUserByUsername(user.getEmail());
+                = this.myUserDetailsService.loadUserByUsername(userDto.getEmail());
 
         final String token
                 = this.jwtUtility.generateToken(userDetails);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthenticateResponse(user, new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token))));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthenticateResponse(userDto, new JwtResponse(token, this.jwtUtility.getExpirationTimeInMillis(token))));
     }
 
-    @CrossOrigin()
+
     @GetMapping("/users")
-    public List<AppUser> getUsers() {
+    public List<UserDto> getUsers() {
         return this.userService.getUsers();
     }
 
-    @PostMapping("/user")
-    public AppUser addUser(@RequestBody AppUser user) {
-        AppUser tempUser = this.userService.addUser(user);
-        if (tempUser == null) {
-            throw  new RuntimeException("User not found");
-        }
-        return tempUser;
+    @GetMapping("/user")
+    public ResponseEntity getUser(@RequestParam("id") int id){
+        UserProfileResponse userProfileResponse = this.userService.getUserWithIdAndPosts(id);
+        return ResponseEntity.ok(userProfileResponse);
     }
 }
