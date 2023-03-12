@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PostFeed } from '../post/post.component';
 import { ProfileService } from './profile.service';
 
 @Component({

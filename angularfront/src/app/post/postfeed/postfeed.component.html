@@ -9,7 +9,7 @@
               <div class="col-md-12 box-header with-border">
                 <div class="user-block">
                   <img
-                    *ngIf="post.profilePic; else noProfilePic"
+                    *ngIf="post.creator.profilePicUrl; else noProfilePic"
                     class="rounded-circle"
                     src="https://bootdey.com/img/Content/avatar/avatar1.png"
                     alt="User Image"
@@ -23,7 +23,7 @@
                     ></span>
                   </ng-template>
                   <button
-                    *ngIf="post.userId === user.id"
+                    *ngIf="post.creator.id === user.id"
                     type="button"
                     class="btn btn-outline-danger pull-right"
                     style="margin: 0"
@@ -33,15 +33,15 @@
                   </button>
                   <span
                     [routerLink]="['/profile']"
-                    [queryParams]="{ id: post.userId }"
+                    [queryParams]="{ id: post.creator.id }"
                     class="username"
-                    [ngClass]="{ ondbox: post.userId !== user.id }"
-                    ><a>{{ post.fullName }}</a></span
+                    [ngClass]="{ ondbox: post.creator.id !== user.id }"
+                    ><a>{{ post.creator.fullName }}</a></span
                   >
                   <br />
                   <span
                     class="shared"
-                    [ngClass]="{ ondbox: post.userId !== user.id }"
+                    [ngClass]="{ ondbox: post.creator.id !== user.id }"
                     ><b>
                       Julkaistu - {{ post.post.timestamp | myCustomDatePipe }}
                     </b>
@@ -92,7 +92,7 @@
                     *ngFor="let comment of post.postComments"
                   >
                     <img
-                      *ngIf="comment.profilePicUrl; else noProfilePic"
+                      *ngIf="comment.user.profilePicUrl; else noProfilePic"
                       class="rounded-circle"
                       src="https://bootdey.com/img/Content/avatar/avatar2.png"
                       alt="User Image"
@@ -112,9 +112,9 @@
                         class="username"
                         style="cursor: pointer"
                         [routerLink]="['/profile']"
-                        [queryParams]="{ id: comment.userId }"
+                        [queryParams]="{ id: comment.user.id }"
                       >
-                        {{ comment.firstName + " " + comment.lastName }}
+                        {{ comment.user.fullName }}
                         <span class="text-muted pull-right">{{
                           comment.comment.timestamp | myCustomDatePipe
                         }}</span>

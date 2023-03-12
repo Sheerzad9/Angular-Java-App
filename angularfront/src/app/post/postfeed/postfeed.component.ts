@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/auth/user.model';
 import { ProfileService } from 'src/app/profilepage/profile.service';
-import { PostFeed } from '../post.component';
+import { PostFeed } from 'src/app/model/postFeed.model';
 import { PostService } from '../post.service';
 import { DeletePostConfirmationModalComponent } from 'src/app/modals/delete-post-confirmation-modal/delete-post-confirmation-modal.component';
 

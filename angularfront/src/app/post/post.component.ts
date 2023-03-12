@@ -3,23 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { PostService } from './post.service';
-
-export interface PostFeed {
-  post: {
-    id: number;
-    title: string;
-    content: string;
-    imageUrl: string;
-    likes: number;
-    timestamp: any;
-    comments: any[];
-  };
-  userId: number;
-  fullName: string;
-  profilePic: string;
-  dateOfPost: any;
-  postComments: any[];
-}
+import { PostFeed } from '../model/postFeed.model';
 
 @Component({
   selector: 'app-post',
