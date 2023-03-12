@@ -11,14 +11,24 @@
               alt="..."
               width="130"
               class="rounded mb-2 img-thumbnail"
-            /><a href="#" class="btn btn-dark btn-sm btn-block">Edit profile</a>
+            /><a class="btn btn-dark btn-sm btn-block">Edit profile</a>
           </div>
-          <div class="media-body mb-5 text-white">
-            <h4 class="mt-0 mb-0">Manuella Tarly</h4>
-            <p class="small mb-4">
-              <i class="fa fa-map-marker mr-2"></i>San Farcisco
-            </p>
+          <div *ngIf="userInfo?.user; else NoUserInfo">
+            <div #NoUserInfo class="media-body mb-5 text-white">
+              <h4 class="mt-0 mb-0">{{ userInfo?.user.fullName }}</h4>
+              <p class="small mb-4">
+                <i class="fa fa-map-marker mr-2"></i>San Farcisco
+              </p>
+            </div>
           </div>
+          <ng-template #NoUserInfo>
+            <div #NoUserInfo class="media-body mb-5 text-white">
+              <h4 class="mt-0 mb-0">Manuella Tarly</h4>
+              <p class="small mb-4">
+                <i class="fa fa-map-marker mr-2"></i>San Farcisco
+              </p>
+            </div>
+          </ng-template>
         </div>
       </div>
 
@@ -39,6 +49,6 @@
         </ul>
       </div>
     </div>
-    <app-postfeed [posts]="postFeed?.posts" [profileId]="id"></app-postfeed>
+    <app-postfeed [posts]="userInfo?.posts" [profileId]="id"></app-postfeed>
   </div>
 </div>

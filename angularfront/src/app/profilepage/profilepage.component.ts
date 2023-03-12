@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserInfoWithIdResponse } from '../model/getUserInfoWithIdResponse.model';
 import { ProfileService } from './profile.service';
 
 @Component({
@@ -9,17 +10,15 @@ import { ProfileService } from './profile.service';
 })
 export class ProfilepageComponent implements OnInit {
   id: number;
-  postFeed: any;
+  userInfo: UserInfoWithIdResponse;
   constructor(
     private activedRoute: ActivatedRoute,
     private profileService: ProfileService
   ) {
-    if (this.activedRoute.snapshot.queryParams['id']) {
-      this.activedRoute.queryParams.subscribe((params) => {
-        this.id = params.id;
-        console.log(params);
-      });
-    }
+    this.activedRoute.queryParams.subscribe((params) => {
+      this.id = params.id;
+      console.log(params);
+    });
   }
 
   ngOnInit(): void {
@@ -29,7 +28,7 @@ export class ProfilepageComponent implements OnInit {
     this.profileService.getUserInfo(this.id).subscribe(
       (res) => {
         console.log(res);
-        this.postFeed = res;
+        this.userInfo = res;
       },
       (err) => console.log(err)
     );
