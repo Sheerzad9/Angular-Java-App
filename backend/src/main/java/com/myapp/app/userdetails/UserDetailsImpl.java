@@ -1,6 +1,6 @@
 package com.myapp.app.userdetails;
 
-import com.myapp.app.entity.AppUser;
+import com.myapp.app.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,10 +9,10 @@ import java.util.Collections;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private final AppUser appUser;
+    private final UserEntity userEntity;
 
-    public UserDetailsImpl(AppUser appUser) {
-        this.appUser = appUser;
+    public UserDetailsImpl(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Override
@@ -27,12 +27,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.appUser.getPassword();
+        return this.userEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.appUser.getEmail();
+        return this.userEntity.getEmail();
     }
 
     @Override
