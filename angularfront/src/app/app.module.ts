@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogInModule } from './log-in/log-in.module';
@@ -16,6 +16,7 @@ import { PostModule } from './post/post.module';
 import { LoadingInterceptor } from './shared/loading-interceptor.service';
 import { SpinnerModule } from './shared/spinner/spinner.module';
 import { DeletePostConfirmationModalComponent } from './modals/delete-post-confirmation-modal/delete-post-confirmation-modal.component';
+import { ToastsContainer } from './shared/toast/toast-container.component';
 
 @NgModule({
   declarations: [
@@ -24,15 +25,16 @@ import { DeletePostConfirmationModalComponent } from './modals/delete-post-confi
     ProfilepageComponent,
     MenuComponent,
     DeletePostConfirmationModalComponent,
+    ToastsContainer,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    NgbToastModule,
     HttpClientModule,
     BrowserAnimationsModule,
     LogInModule,
-    NgbModule,
     ReactiveFormsModule,
     PostModule,
     SpinnerModule,
