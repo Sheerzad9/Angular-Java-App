@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/auth/user.model';
 import { ProfileService } from 'src/app/profilepage/profile.service';
 import { PostFeed } from '../post.component';
 import { PostService } from '../post.service';
+import { DeletePostConfirmationModalComponent } from 'src/app/modals/delete-post-confirmation-modal/delete-post-confirmation-modal.component';
 
 @Component({
   selector: 'app-postfeed',
@@ -13,7 +15,6 @@ import { PostService } from '../post.service';
 })
 export class PostfeedComponent implements OnInit {
   @Input() posts: PostFeed[];
-  //@Input() getPostFeed: () => any;
   @Input() profileId: number;
   user: User;
 
@@ -21,11 +22,15 @@ export class PostfeedComponent implements OnInit {
     private postService: PostService,
     private authService: AuthService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
-    this.authService.user.subscribe((user) => (this.user = user));
+    this.authService.user.subscribe((user) => {
+      console.log('User details: ', user);
+      this.user = user;
+    });
   }
 
   getPostFeed() {
@@ -62,5 +67,15 @@ export class PostfeedComponent implements OnInit {
 
   goToProfile() {
     this.router.navigate(['/profile']);
+  }
+
+  onDeletePost() {
+    let dlg = this.modalService
+      .open(DeletePostConfirmationModalComponent, {
+        size: 'lg',
+        animation: true,
+      })
+      .result.then((res) => console.log(res))
+      .catch((err) => console.log(err));
   }
 }

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { ToastService } from '../shared/toast/toast.service';
 
 @Component({
   selector: 'app-log-in',
@@ -26,7 +27,11 @@ export class LogInComponent {
     password: string;
   } = { firstName: null, lastName: null, email: null, password: null };
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastService: ToastService
+  ) {
     this.isLoginMode = true;
   }
 
@@ -34,14 +39,24 @@ export class LogInComponent {
     this.isLoginMode
       ? this.authService.handleLogin(this.loginData).subscribe(
           (res) => {
-            console.log('Testi');
             this.router.navigate(['/homepage']);
+            this.toastService.show(
+              `Tervetuloa takaisin ${res.user.firstName}`,
+              {
+                classname: 'bg-success text-light',
+                delay: 10000,
+              }
+            );
           },
           (err) => (this.error.login = true)
         )
       : this.authService.handleSignup(this.signupData).subscribe(
           (res) => {
             this.router.navigate(['/homepage']);
+            this.toastService.show(`Tervetuloa ${res.user.firstName}`, {
+              classname: 'bg-success text-light',
+              delay: 10000,
+            });
           },
           (err) => {
             this.error.signup = true;
