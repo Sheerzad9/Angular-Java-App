@@ -11,8 +11,9 @@ interface AuthResponse {
     id: number;
     firstName: string;
     lastName: string;
+    fullName: string;
     email: string;
-    password: string; // bcrypted
+    profilePicUrl: string; // bcrypted
   };
   jwtResponse: {
     jwtToken: string;
@@ -35,8 +36,8 @@ export class AuthService {
             resData.user.id,
             resData.user.firstName,
             resData.user.lastName,
+            resData.user.fullName,
             resData.user.email,
-            bodyData.password,
             resData.jwtResponse.jwtToken,
             resData.jwtResponse.expiryDateInMillis
           );
@@ -58,8 +59,8 @@ export class AuthService {
             resData.user.id,
             resData.user.firstName,
             resData.user.lastName,
+            resData.user.fullName,
             resData.user.email,
-            bodyData.password,
             resData.jwtResponse.jwtToken,
             resData.jwtResponse.expiryDateInMillis
           );
@@ -71,8 +72,8 @@ export class AuthService {
     id: number,
     firstName: string,
     lastName: string,
+    fullName: string,
     email: string,
-    password: string,
     _token: string,
     _tokenExpirationDate: number
   ) {
@@ -82,8 +83,8 @@ export class AuthService {
       id,
       firstName,
       lastName,
+      fullName,
       email,
-      password,
       _token,
       new Date(tokenExpirationInDate)
     );
@@ -98,8 +99,8 @@ export class AuthService {
       id: string;
       firstName: string;
       lastName: string;
+      fullName: string;
       email: string;
-      password: string;
       _token: string;
       _tokenExpirationDate: string;
     };
@@ -110,8 +111,8 @@ export class AuthService {
       +userData.id,
       userData.firstName,
       userData.lastName,
+      userData.fullName,
       userData.email,
-      userData.password,
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
